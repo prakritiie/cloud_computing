@@ -11,3 +11,25 @@ crash.*.log
 .idea/
 .DS_Store
 Thumbs.db
+
+# Terraform generated files
+**/.terraform/
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+*.tfplan
+
+# Terraform crash logs
+crash.log
+crash.*.log
+
+# Terraform variable files
+*.tfvars
+*.tfvars.json
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

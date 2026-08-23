@@ -1,0 +1,15 @@
+services:
+  postgres-backend:
+    image: postgres:16-alpine
+    container_name: tf_backend_db
+    environment:
+      POSTGRES_USER: tf_user
+      POSTGRES_PASSWORD: tf_password
+      POSTGRES_DB: terraform_backend
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
