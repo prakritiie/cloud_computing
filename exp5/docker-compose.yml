@@ -1,0 +1,22 @@
+services:
+  resilient-app:
+    image: nginx:alpine
+    container_name: resilient_service
+
+    restart: always
+
+    ports:
+      - "8080:80"
+
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:80/ || exit 1"]
+      interval: 3s
+      timeout: 2s
+      retries: 2
+      start_period: 2s
