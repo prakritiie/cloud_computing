@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: microservices-lab
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-api
+  template:
+    metadata:
+      labels:
+        app: backend-api
+    spec:
+      containers:
+        - name: api-service
+          image: hashicorp/http-echo:latest
+          args:
+            - "-text=Backend Service Online | Env: $(APP_ENV) | Connected to: $(DB_HOST)"
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: app-secrets
+          ports:
+            - containerPort: 5678
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: microservices-lab
+spec:
+  type: ClusterIP
+  selector:
+    app: backend-api
+  ports:
+    - port: 5000
+      targetPort: 5678
