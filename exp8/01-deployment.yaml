@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-apache-autoscale
+  labels:
+    app: autoscale-app
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: autoscale-app
+
+  template:
+    metadata:
+      labels:
+        app: autoscale-app
+
+    spec:
+      containers:
+        - name: php-apache
+
+          image: registry.k8s.io/hpa-example
+
+          ports:
+            - containerPort: 80
+
+          resources:
+            requests:
+              cpu: "200m"
+
+            limits:
+              cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: php-apache-service
+
+spec:
+  type: ClusterIP
+
+  selector:
+    app: autoscale-app
+
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
